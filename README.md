@@ -1,73 +1,62 @@
-# React + TypeScript + Vite
+# React + TypeScript + Vite + Redux
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This is a simple working example of redux usage
 
-Currently, two official plugins are available:
+To keep it simple store api etc are not in folders.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Running the application
 
-## React Compiler
+commands
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```
+bun i
+bun run dev
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## Explanation
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+We have 3 entities in the store User, Menu, and Cart.
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+- User is loaded in the beginning and stay there forever.
+- Menu is loaded in the beginning and only active menu item is updated based on the selection.
+- Cart is dynamic and updates server when an item is added.
+
+### src/types.ts
+
+Entities defined in types.ts. They are the data structures.
+
+### src/api.ts
+
+it's a dummy api call to get initial data and cart sync
+
+### src/store.ts
+
+it contains slices (for entities), middleware to update cart in the server, store, types and actions
+
+### src/hook.ts
+
+it's the wrapper for useDispatch and useSelector. Small but effective wrapper
+
+### src/components/UserInfo.tsx
+
+it's the user component using store to get user info
+
+### src/components/Menu.tsx
+
+it's the menu component using store to get menu items and set active menu
+
+### src/components/CartSummary.tsx
+
+it's the cart component using store to update and display cart items and sync them with server
+
+### src/pages/ProductPage.tsx
+
+dummy product page to add / remove item from cart
+
+### src/App.tsx
+
+It's where we fetch initial data from the server and update the store
+
+### src/main.tsx
+
+it's where we wire up store and set Provider
